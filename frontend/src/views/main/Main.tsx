@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import './Main.scss';
 import MyButton from 'components/MyButton';
+import { appRoutes } from 'routes/routes';
 
 const MainView = () => {
   return (
@@ -12,10 +13,10 @@ const MainView = () => {
           Analytics
         </h1>
         <div className="buttonWrapper">
-          <Link to="/signin">
+          <Link to={appRoutes.signIn}>
             <MyButton buttonText="Sign in" />
           </Link>
-          <Link to="/signup">
+          <Link to={appRoutes.signUp}>
             <MyButton buttonText="Sign up" />
           </Link>
         </div>
