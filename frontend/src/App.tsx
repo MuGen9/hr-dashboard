@@ -1,10 +1,20 @@
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import MainView from 'views/main/Main';
+import SignIn from 'views/signIn/SignIn';
+import SignUp from 'views/singUp/SignUp';
 
 const App = () => {
   return (
-    <header className="App-header">
-      <h1>Mentoring frontend start</h1>
-    </header>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/">
+          <Route index element={<MainView />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
