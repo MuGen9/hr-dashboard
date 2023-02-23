@@ -1,27 +1,45 @@
 import { Link } from 'react-router-dom';
+import { Box, Button, Stack } from '@mui/material';
 
 import './Main.scss';
-import MyButton from 'components/MyButton';
 import { appRoutes } from 'routes/routes';
 
 const MainView = () => {
   return (
-    <div className="mainWrapper">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+      sx={{ height: 1 }}
+    >
       <div className="mainBox">
         <h1>
           HR <br className="hide" />
           Analytics
         </h1>
-        <div className="buttonWrapper">
+        <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="center">
           <Link to={appRoutes.signIn}>
-            <MyButton buttonText="Sign in" />
+            <Button
+              color="warning"
+              variant="contained"
+              sx={{ fontSize: '1.2rem', m: 2, p: 2 }}
+            >
+              Sign in
+            </Button>
           </Link>
           <Link to={appRoutes.signUp}>
-            <MyButton buttonText="Sign up" />
+            <Button
+              color="warning"
+              variant="contained"
+              sx={{ fontSize: '1.2rem', m: 2, p: 2 }}
+            >
+              Sign up
+            </Button>
           </Link>
-        </div>
+        </Stack>
       </div>
-    </div>
+    </Box>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
-import MyButton from 'components/MyButton';
 import { appRoutes } from 'routes/routes';
 
 const SignUp = () => {
@@ -8,7 +8,13 @@ const SignUp = () => {
     <>
       <h2>Sign up!</h2>
       <Link to={appRoutes.main}>
-        <MyButton buttonText="Back" />
+        <Button
+          color="warning"
+          variant="contained"
+          sx={{ fontSize: '1.2rem', m: 2, p: 2 }}
+        >
+          Back
+        </Button>
       </Link>
     </>
   );
