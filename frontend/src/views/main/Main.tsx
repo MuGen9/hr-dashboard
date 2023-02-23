@@ -18,7 +18,11 @@ const MainView = () => {
           HR <br className="hide" />
           Analytics
         </h1>
-        <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="center">
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          justifyContent="center"
+          spacing={1.5}
+        >
           <Link to={appRoutes.signIn}>
             <Button
               color="warning"
