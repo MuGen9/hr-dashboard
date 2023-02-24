@@ -9,7 +9,7 @@ const SignUp = () => {
       <h2>Sign up!</h2>
       <Link to={appRoutes.main}>
         <Button
-          color="warning"
+          color="primary"
           variant="contained"
           sx={{ fontSize: '1.2rem', m: 2, p: 2 }}
         >
