@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { getRandomInt } from 'src/common/utils/getRandomInt';
 import { CreateJobDto } from 'src/jobs/dto/create-job.dto';
-import { Job, statuses } from 'src/jobs/models/job.entity';
+import { Job, statuses } from 'src/jobs/model/job.entity';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 const createRandomStatus = () => {

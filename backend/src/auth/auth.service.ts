@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 import { JwtService } from 'src/jwt/jwt.service';
 import { UsersService } from 'src/users/users.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -13,7 +13,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto, withRefreshToken = true) {
     const user = await this.usersService.findOneWithPassword({
       email: loginDto.email,
     });
@@ -22,15 +22,35 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const isValidPassword = await bcrypt.compare(
-      loginDto.password,
+    const isValidPassword = await argon2.verify(
       user.password,
+      loginDto.password,
     );
 
     if (!isValidPassword) {
       throw new UnauthorizedException();
     }
-    return { access_token: this.jwtService.sign(user.id) };
+
+    const accessToken = this.jwtService.sign(user.id, !withRefreshToken);
+
+    if (withRefreshToken) {
+      const refreshToken = await this.refreshToken(user.id);
+
+      return {
+        accessToken,
+        refreshToken,
+      };
+    }
+
+    return { accessToken };
+  }
+
+  async refreshToken(userId: string) {
+    const refreshToken = this.jwtService.signRefreshToken(userId);
+
+    await this.usersService.updateRefreshToken(userId, refreshToken);
+
+    return refreshToken;
   }
 
   async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
@@ -42,9 +62,9 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const isValidPassword = await bcrypt.compare(
-      changePasswordDto.oldPassword,
+    const isValidPassword = await argon2.verify(
       user.password,
+      changePasswordDto.oldPassword,
     );
 
     if (!isValidPassword) {

@@ -10,8 +10,3 @@ export class LoginDto {
   @Length(5, 15)
   password: string;
 }
-
-export class LoginResponseDto {
-  @ApiProperty()
-  access_token: string;
-}

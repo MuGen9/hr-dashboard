@@ -1,5 +1,10 @@
 ## Uruchomienie backendu
 
+Instalacja yarn'a:
+`npm install --global yarn`
+
+[Inne opcje instalacji yarna.](https://classic.yarnpkg.com/lang/en/docs/install/)
+
 Zainstaluj paczki za pomocą wybranego package managera (domyślnie yarn - patrz lockfile):
 
 `yarn`
@@ -11,6 +16,8 @@ Zainicjuj bazę danych uruchamiając komendę z folderu backendowego (więcej in
 Uruchom backend za pomocą komendy:
 
 `yarn start:dev`
+
+[VIDEO: Odpalanie API i praca ze swaggerem.](https://youtu.be/0CTSrqNyEd0)
 
 ## Dokumentacja API
 

@@ -11,6 +11,7 @@ Stwórz branch na bazie gałęzi main:
 - Potrzebne dane pobierzesz za pomocą requestu `GET /users/me`
 - na stronie profilu dodaj 2 formularze, jeden do zmiany hasła a drugi do zmiany imienia i nazwiska
 - request do zmiany hasła: `PUT /auth/change-password`, body: `oldPassword: string; newPassword: string`, walidacja taka sama jak przy rejestracji
+- zmiana hasła powoduje unieważnienie refresh-tokenu w związku z czym użytkownik nie będzie w stanie używać aplikacji po wygaśnięciu access tokenu. W związku z tym po zmianie hasła wyloguj użytkownika i przekieruj na stronę logowania w celu otrzymania nowej pary tokenów.
 - formularz zmiany hasła powinien wymagać powtórzenia nowego hasła a poprawność powinna zostać zwalidowana po stronie front-endu
 - po poprawnej zmianie hasła wyloguj użytkownika i przenieś go na stronę logowania celem otrzymania nowego tokenu użytkownika
 - request do zmiany imienia i nazwiska: `PUT /users/me`, body: `firstName: string, lastName: string`, walidacja taka sama jak przy rejestracji

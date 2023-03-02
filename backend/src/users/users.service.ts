@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -35,8 +35,7 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+    const hashedPassword = await argon2.hash(createUserDto.password);
 
     const foundUser = await this.userRepository.findOneBy({
       email: createUserDto.email,
@@ -59,12 +58,20 @@ export class UsersService {
   }
 
   async updatePassword(userId: string, updatePasswordDto: UpdatePasswordDto) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(updatePasswordDto.password, salt);
+    const hashedPassword = await argon2.hash(updatePasswordDto.password);
 
     await this.userRepository.update(
       { id: userId },
-      { password: hashedPassword },
+      { password: hashedPassword, refreshToken: null },
+    );
+  }
+
+  async updateRefreshToken(userId: string, refreshToken: string) {
+    const hashedRefreshToken = await argon2.hash(refreshToken);
+
+    await this.userRepository.update(
+      { id: userId },
+      { refreshToken: hashedRefreshToken },
     );
   }
 

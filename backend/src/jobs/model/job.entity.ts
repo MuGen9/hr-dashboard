@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Meeting } from '../../meetings/model/meeting.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -47,4 +49,7 @@ export class Job {
   @ApiProperty({ enum: statuses })
   @Column({ default: 'OPEN' })
   status: Status;
+
+  @OneToMany(() => Meeting, (meeting) => meeting.candidate)
+  meetings: Meeting[];
 }

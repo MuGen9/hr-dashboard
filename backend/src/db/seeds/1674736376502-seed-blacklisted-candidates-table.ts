@@ -19,7 +19,10 @@ export class seedBlacklistedCandidatesTable1674736376502
 
     const queries = candidates.map((candidate) =>
       queryRunner.manager.save(
-        queryRunner.manager.create<BlacklistedCandidate>('blacklisted_candidate', candidate),
+        queryRunner.manager.create<BlacklistedCandidate>(
+          'blacklisted_candidate',
+          candidate,
+        ),
       ),
     );
 

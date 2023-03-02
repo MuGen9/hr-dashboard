@@ -1,11 +1,12 @@
 import { Body, Controller, Get, Put, Request, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/jwt/guards/jwt-auth.guard';
 import { AuthorisedRequest } from 'src/types/request';
 import { User } from 'src/users/model/user.entity';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { UsersService } from './users.service';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
