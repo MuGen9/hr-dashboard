@@ -1,6 +1,5 @@
 import { Box, Button, Stack, Link, Paper, Typography } from '@mui/material';
 
-import './Main.css';
 import { appRoutes } from 'routes/routes';
 
 const MainView = () => {
@@ -22,11 +21,12 @@ const MainView = () => {
           sx={{
             fontSize: '5rem',
             fontWeight: 'medium',
-            margin: '1.5rem',
+            margin: '1rem',
             wordBreak: 'break-all'
           }}
         >
-          HR <br className="hideBrTag" />
+          HR{' '}
+          <Box component="br" sx={{ display: { xs: 'initial', sm: 'none' } }} />
           Analytics
         </Typography>
         <Stack
