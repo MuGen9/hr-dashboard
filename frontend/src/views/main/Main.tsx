@@ -19,7 +19,12 @@ const MainView = () => {
         <Typography
           variant="h1"
           align="center"
-          sx={{ fontSize: '5rem', fontWeight: 'medium', margin: '1.5rem' }}
+          sx={{
+            fontSize: '5rem',
+            fontWeight: 'medium',
+            margin: '1.5rem',
+            wordBreak: 'break-all'
+          }}
         >
           HR <br className="hideBrTag" />
           Analytics

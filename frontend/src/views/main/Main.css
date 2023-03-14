@@ -1,7 +1,3 @@
-h1 {
-    word-break: break-all;
-}
-
 @media (min-width: 600px) {
     .hideBrTag {
         display: none;
