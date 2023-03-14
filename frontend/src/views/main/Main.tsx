@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Stack, Link, Paper, Typography } from '@mui/material';
 
-import './Main.scss';
+import './Main.css';
 import { appRoutes } from 'routes/routes';
 
 const MainView = () => {
@@ -13,17 +12,25 @@ const MainView = () => {
       flexDirection="column"
       sx={{ minHeight: '100vh' }}
     >
-      <div className="mainBox">
-        <h1>
-          HR <br className="hide" />
+      <Paper
+        elevation={5}
+        sx={{ p: 1, display: { xs: 'contents', sm: 'block' } }}
+      >
+        <Typography
+          variant="h1"
+          align="center"
+          sx={{ fontSize: '5rem', fontWeight: 'medium', margin: '1.5rem' }}
+        >
+          HR <br className="hideBrTag" />
           Analytics
-        </h1>
+        </Typography>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           justifyContent="center"
+          alignItems="center"
           spacing={1.5}
         >
-          <Link to={appRoutes.signIn}>
+          <Link href={appRoutes.signIn}>
             <Button
               color="primary"
               variant="contained"
@@ -32,7 +39,7 @@ const MainView = () => {
               Sign in
             </Button>
           </Link>
-          <Link to={appRoutes.signUp}>
+          <Link href={appRoutes.signUp}>
             <Button
               color="primary"
               variant="contained"
@@ -42,7 +49,7 @@ const MainView = () => {
             </Button>
           </Link>
         </Stack>
-      </div>
+      </Paper>
     </Box>
   );
 };

@@ -8,5 +8,14 @@ export const theme = createTheme({
     secondary: {
       main: '#2391c4'
     }
+  },
+  components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          textDecoration: 'none'
+        }
+      }
+    }
   }
 });
