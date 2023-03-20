@@ -26,11 +26,27 @@ const SignUp = () => {
     formState: { errors },
     handleSubmit
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = data => console.log(data);
+
+  const onSubmit: SubmitHandler<IFormInput> = data => {
+    console.log(data);
+  };
 
   useEffect(() => {
     document.title = 'HR Dashboard - Sign Up';
   }, []);
+
+  const required = {
+    value: true,
+    message: 'This field cannot be empty'
+  };
+  const minLength = {
+    value: 3,
+    message: 'Please use at least 3 characters'
+  };
+  const maxLength = {
+    value: 15,
+    message: 'Please use less than 15 characters'
+  };
 
   return (
     <Box
@@ -68,38 +84,76 @@ const SignUp = () => {
               variant="standard"
               sx={{ width: { xs: '230px', sm: '300px' } }}
               {...register('firstName', {
-                required: true,
-                minLength: 4,
-                maxLength: 15
+                required,
+                minLength,
+                maxLength
               })}
               error={Boolean(errors.firstName)}
-              helperText={errors.firstName && `${errors.firstName.message}`}
+              helperText={errors?.firstName?.message}
             />
             <TextField
               label="Last name *"
               variant="standard"
               sx={{ width: { xs: '230px', sm: '300px' } }}
-              {...register('lastName', { required: true })}
+              {...register('lastName', {
+                required,
+                minLength,
+                maxLength
+              })}
+              error={Boolean(errors.lastName)}
+              helperText={errors?.lastName?.message}
             />
             <TextField
               label="Email *"
               variant="standard"
               sx={{ width: { xs: '230px', sm: '300px' } }}
-              {...register('email', { required: true })}
+              {...register('email', {
+                required,
+                minLength: {
+                  value: 3,
+                  message: 'Please use at least 3 characters'
+                }
+              })}
+              error={Boolean(errors.email)}
+              helperText={errors?.email?.message}
             />
             <TextField
               label="Password *"
               variant="standard"
               type="password"
               sx={{ width: { xs: '230px', sm: '300px' } }}
-              {...register('password', { required: true })}
+              {...register('password', {
+                required,
+                minLength: {
+                  value: 5,
+                  message: 'Please use at least 5 characters'
+                },
+                maxLength: {
+                  value: 15,
+                  message: 'Please use less than 15 characters'
+                }
+              })}
+              error={Boolean(errors.password)}
+              helperText={errors?.password?.message}
             />
             <TextField
               label="Repeat Password *"
               variant="standard"
               type="password"
               sx={{ width: { xs: '230px', sm: '300px' } }}
-              {...register('passwordRepeat', { required: true })}
+              {...register('passwordRepeat', {
+                required,
+                minLength: {
+                  value: 5,
+                  message: 'Please use at least 5 characters'
+                },
+                maxLength: {
+                  value: 15,
+                  message: 'Please use less than 15 characters'
+                }
+              })}
+              error={Boolean(errors.passwordRepeat)}
+              helperText={errors?.passwordRepeat?.message}
             />
             <Button
               type="submit"
