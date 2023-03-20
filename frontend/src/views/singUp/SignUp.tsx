@@ -23,6 +23,7 @@ interface IFormInput {
 const SignUp = () => {
   const {
     register,
+    watch,
     formState: { errors },
     handleSubmit
   } = useForm<IFormInput>();
@@ -109,9 +110,9 @@ const SignUp = () => {
               sx={{ width: { xs: '230px', sm: '300px' } }}
               {...register('email', {
                 required,
-                minLength: {
-                  value: 3,
-                  message: 'Please use at least 3 characters'
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: 'Please use a valid e-mail address'
                 }
               })}
               error={Boolean(errors.email)}
@@ -143,6 +144,8 @@ const SignUp = () => {
               sx={{ width: { xs: '230px', sm: '300px' } }}
               {...register('passwordRepeat', {
                 required,
+                validate: value =>
+                  value === watch('password') || 'The passwords do not match',
                 minLength: {
                   value: 5,
                   message: 'Please use at least 5 characters'
