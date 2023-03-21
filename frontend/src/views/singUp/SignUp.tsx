@@ -10,6 +10,7 @@ import {
   Alert
 } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import { appRoutes } from 'routes/routes';
 
@@ -25,6 +26,7 @@ interface IFormInput {
 
 const SignUp = () => {
   const [apiResponse, setApiResponse] = useState('');
+  const navigate = useNavigate();
 
   const {
     register,
@@ -39,7 +41,10 @@ const SignUp = () => {
     delete newData.passwordRepeat;
     api
       .post('/auth/register', newData)
-      .then(response => console.log('then', response))
+      .then(res => {
+        console.log('then', res);
+        navigate(appRoutes.signIn);
+      })
       .catch(error => {
         console.log('catch', error.response.data);
         setApiResponse(error.response.data.message);
