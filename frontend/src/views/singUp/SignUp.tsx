@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Link,
   Box,
@@ -6,21 +6,26 @@ import {
   Stack,
   Typography,
   TextField,
-  Button
+  Button,
+  Alert
 } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { appRoutes } from 'routes/routes';
+
+import api from '../../api/api';
 
 interface IFormInput {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  passwordRepeat: string;
+  passwordRepeat?: string;
 }
 
 const SignUp = () => {
+  const [apiResponse, setApiResponse] = useState('');
+
   const {
     register,
     watch,
@@ -29,7 +34,16 @@ const SignUp = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = data => {
-    console.log(data);
+    setApiResponse('');
+    const newData = { ...data };
+    delete newData.passwordRepeat;
+    api
+      .post('/auth/register', newData)
+      .then(response => console.log('then', response))
+      .catch(error => {
+        console.log('catch', error.response.data);
+        setApiResponse(error.response.data.message);
+      });
   };
 
   useEffect(() => {
@@ -111,7 +125,7 @@ const SignUp = () => {
               {...register('email', {
                 required,
                 pattern: {
-                  value: /\S+@\S+\.\S+/,
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: 'Please use a valid e-mail address'
                 }
               })}
@@ -158,6 +172,7 @@ const SignUp = () => {
               error={Boolean(errors.passwordRepeat)}
               helperText={errors?.passwordRepeat?.message}
             />
+            {apiResponse && <Alert severity="error">{apiResponse}</Alert>}
             <Button
               type="submit"
               variant="contained"
