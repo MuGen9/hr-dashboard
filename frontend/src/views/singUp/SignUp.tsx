@@ -22,11 +22,11 @@ interface IFormInput {
   lastName: string;
   email: string;
   password: string;
-  passwordRepeat?: string;
+  passwordRepeat: string;
 }
 
 const SignUp = () => {
-  const [apiResponse, setApiResponse] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const {
@@ -37,18 +37,17 @@ const SignUp = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = data => {
-    setApiResponse('');
-    const newData = { ...data };
-    delete newData.passwordRepeat;
+    setError('');
+    const { passwordRepeat, ...dataWithoutPasswordRepeat } = data;
     api
-      .post('/auth/register', newData)
+      .post('/auth/register', dataWithoutPasswordRepeat)
       .then(res => {
         console.log('then', res);
         navigate(appRoutes.signIn);
       })
-      .catch(error => {
-        console.log('catch', error.response.data);
-        setApiResponse(error.response.data.message);
+      .catch(err => {
+        console.log('catch', err.response.data);
+        setError(err.response.data.message);
       });
   };
 
@@ -187,7 +186,7 @@ const SignUp = () => {
                 error={Boolean(errors.passwordRepeat)}
                 helperText={errors?.passwordRepeat?.message}
               />
-              {apiResponse && <Alert severity="error">{apiResponse}</Alert>}
+              {error && <Alert severity="error">{error}</Alert>}
               <Button
                 type="submit"
                 variant="contained"
