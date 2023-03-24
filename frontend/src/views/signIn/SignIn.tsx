@@ -1,11 +1,11 @@
 import { Link, Button, Box, Paper, Stack, Typography } from '@mui/material';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import { appRoutes } from 'routes/routes';
 
 const SignIn = () => {
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>HR Dashboard - Sign In</title>
       </Helmet>
@@ -50,7 +50,7 @@ const SignIn = () => {
           </Stack>
         </Paper>
       </Box>
-    </>
+    </HelmetProvider>
   );
 };
 

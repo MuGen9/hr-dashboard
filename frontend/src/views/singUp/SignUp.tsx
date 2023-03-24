@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import { appRoutes } from 'routes/routes';
 
@@ -66,7 +66,7 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>HR Dashboard - Sign Up</title>
       </Helmet>
@@ -204,7 +204,7 @@ const SignUp = () => {
           </Stack>
         </Paper>
       </Box>
-    </>
+    </HelmetProvider>
   );
 };
 
