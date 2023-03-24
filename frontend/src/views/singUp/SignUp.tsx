@@ -71,26 +71,30 @@ const SignUp = () => {
         <title>HR Dashboard - Sign Up</title>
       </Helmet>
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        sx={{ minHeight: '100vh' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: '100vh'
+        }}
       >
         <Paper
           elevation={5}
           sx={{
             p: 2,
-            display: { xs: 'contents', sm: 'block', width: '400px' }
+            width: '450px',
+            borderRadius: 3,
+            display: { xs: 'contents', sm: 'block' }
           }}
         >
           <Typography
             variant="h1"
-            align="center"
             sx={{
               fontSize: '2rem',
               fontWeight: 'medium',
               margin: '1rem',
+              textAlign: 'center',
               wordBreak: 'break-all'
             }}
           >
@@ -98,15 +102,17 @@ const SignUp = () => {
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="column"
               spacing={1.5}
+              sx={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
             >
               <TextField
                 label="First name *"
                 variant="standard"
-                sx={{ width: { xs: '230px', sm: '300px' } }}
+                sx={{ width: { xs: '230px', sm: '320px' } }}
                 {...register('firstName', {
                   required,
                   minLength,
@@ -118,7 +124,7 @@ const SignUp = () => {
               <TextField
                 label="Last name *"
                 variant="standard"
-                sx={{ width: { xs: '230px', sm: '300px' } }}
+                sx={{ width: { xs: '230px', sm: '320px' } }}
                 {...register('lastName', {
                   required,
                   minLength,
@@ -130,7 +136,7 @@ const SignUp = () => {
               <TextField
                 label="Email *"
                 variant="standard"
-                sx={{ width: { xs: '230px', sm: '300px' } }}
+                sx={{ width: { xs: '230px', sm: '320px' } }}
                 {...register('email', {
                   required,
                   pattern: {
@@ -145,7 +151,7 @@ const SignUp = () => {
                 label="Password *"
                 variant="standard"
                 type="password"
-                sx={{ width: { xs: '230px', sm: '300px' } }}
+                sx={{ width: { xs: '230px', sm: '320px' } }}
                 {...register('password', {
                   required,
                   minLength: {
@@ -164,7 +170,7 @@ const SignUp = () => {
                 label="Repeat Password *"
                 variant="standard"
                 type="password"
-                sx={{ width: { xs: '230px', sm: '300px' } }}
+                sx={{ width: { xs: '230px', sm: '320px' } }}
                 {...register('passwordRepeat', {
                   required,
                   validate: value =>
@@ -191,17 +197,10 @@ const SignUp = () => {
               </Button>
             </Stack>
           </form>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            justifyContent="center"
-            alignItems="center"
-            spacing={1.5}
-          >
-            <Typography sx={{ mt: 2 }}>
-              Already have an account? Then{' '}
-              <Link href={appRoutes.signIn}>Sign In</Link>
-            </Typography>
-          </Stack>
+          <Typography sx={{ mt: 2, textAlign: 'center' }}>
+            Already have an account? Then{' '}
+            <Link href={appRoutes.signIn}>Sign In</Link>
+          </Typography>
         </Paper>
       </Box>
     </HelmetProvider>

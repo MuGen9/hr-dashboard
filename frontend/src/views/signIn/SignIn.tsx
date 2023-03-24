@@ -10,11 +10,13 @@ const SignIn = () => {
         <title>HR Dashboard - Sign In</title>
       </Helmet>
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        sx={{ minHeight: '100vh' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: '100vh'
+        }}
       >
         <Paper
           elevation={5}
