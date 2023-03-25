@@ -17,12 +17,14 @@ import { appRoutes } from 'routes/routes';
 
 import api from '../../api/api';
 
+import * as styles from './SignUp.styles';
+
 interface IFormInput {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  passwordRepeat: string;
+  passwordRepeat?: string;
 }
 
 const SignUp = () => {
@@ -69,45 +71,13 @@ const SignUp = () => {
       <Helmet>
         <title>HR Dashboard - Sign Up</title>
       </Helmet>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          minHeight: '100vh'
-        }}
-      >
-        <Paper
-          elevation={5}
-          sx={{
-            p: 2,
-            width: '450px',
-            borderRadius: 3,
-            display: { xs: 'contents', sm: 'block' }
-          }}
-        >
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: '2rem',
-              fontWeight: 'medium',
-              margin: '1rem',
-              textAlign: 'center',
-              wordBreak: 'break-all'
-            }}
-          >
+      <Box sx={styles.box}>
+        <Paper elevation={5} sx={styles.paper}>
+          <Typography variant="h1" sx={styles.typography}>
             Sign up
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack
-              spacing={1.5}
-              sx={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
+            <Stack spacing={1.5} sx={styles.stack}>
               <TextField
                 label="First name *"
                 variant="standard"
