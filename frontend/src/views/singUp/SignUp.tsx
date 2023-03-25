@@ -12,11 +12,13 @@ import {
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { appRoutes } from 'routes/routes';
 
 import api from '../../api/api';
 
+import { registerSchema } from './SignUp.registerSchema';
 import * as styles from './SignUp.styles';
 
 interface IFormInput {
@@ -24,7 +26,7 @@ interface IFormInput {
   lastName: string;
   email: string;
   password: string;
-  passwordRepeat?: string;
+  passwordRepeat: string;
 }
 
 const SignUp = () => {
@@ -33,10 +35,12 @@ const SignUp = () => {
 
   const {
     register,
-    watch,
-    formState: { errors },
-    handleSubmit
-  } = useForm<IFormInput>();
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IFormInput>({
+    resolver: zodResolver(registerSchema),
+    mode: 'onBlur'
+  });
 
   const onSubmit: SubmitHandler<IFormInput> = data => {
     setError('');
@@ -51,19 +55,6 @@ const SignUp = () => {
         console.log('catch', err.response.data);
         setError(err.response.data.message);
       });
-  };
-
-  const required = {
-    value: true,
-    message: 'This field cannot be empty'
-  };
-  const minLength = {
-    value: 3,
-    message: 'Please use at least 3 characters'
-  };
-  const maxLength = {
-    value: 15,
-    message: 'Please use less than 15 characters'
   };
 
   return (
@@ -82,23 +73,15 @@ const SignUp = () => {
                 label="First name *"
                 variant="standard"
                 sx={{ width: { xs: '230px', sm: '320px' } }}
-                {...register('firstName', {
-                  required,
-                  minLength,
-                  maxLength
-                })}
+                {...register('firstName')}
                 error={Boolean(errors.firstName)}
-                helperText={errors?.firstName?.message}
+                helperText={errors.firstName?.message}
               />
               <TextField
                 label="Last name *"
                 variant="standard"
                 sx={{ width: { xs: '230px', sm: '320px' } }}
-                {...register('lastName', {
-                  required,
-                  minLength,
-                  maxLength
-                })}
+                {...register('lastName')}
                 error={Boolean(errors.lastName)}
                 helperText={errors?.lastName?.message}
               />
@@ -106,13 +89,7 @@ const SignUp = () => {
                 label="Email *"
                 variant="standard"
                 sx={{ width: { xs: '230px', sm: '320px' } }}
-                {...register('email', {
-                  required,
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Please use a valid e-mail address'
-                  }
-                })}
+                {...register('email')}
                 error={Boolean(errors.email)}
                 helperText={errors?.email?.message}
               />
@@ -121,17 +98,7 @@ const SignUp = () => {
                 variant="standard"
                 type="password"
                 sx={{ width: { xs: '230px', sm: '320px' } }}
-                {...register('password', {
-                  required,
-                  minLength: {
-                    value: 5,
-                    message: 'Please use at least 5 characters'
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: 'Please use less than 15 characters'
-                  }
-                })}
+                {...register('password')}
                 error={Boolean(errors.password)}
                 helperText={errors?.password?.message}
               />
@@ -140,19 +107,7 @@ const SignUp = () => {
                 variant="standard"
                 type="password"
                 sx={{ width: { xs: '230px', sm: '320px' } }}
-                {...register('passwordRepeat', {
-                  required,
-                  validate: value =>
-                    value === watch('password') || 'The passwords do not match',
-                  minLength: {
-                    value: 5,
-                    message: 'Please use at least 5 characters'
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: 'Please use less than 15 characters'
-                  }
-                })}
+                {...register('passwordRepeat')}
                 error={Boolean(errors.passwordRepeat)}
                 helperText={errors?.passwordRepeat?.message}
               />
