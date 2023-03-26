@@ -45,8 +45,7 @@ const SignUp = () => {
   });
 
   const apiPost = async (data: IFormInput) => {
-    const res = await api.post('/auth/register', data);
-    return res;
+    await api.post('/auth/register', data);
   };
 
   const { mutate, isLoading } = useMutation(apiPost, {
@@ -58,7 +57,7 @@ const SignUp = () => {
     }
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = async userData => {
+  const onSubmit: SubmitHandler<IFormInput> = userData => {
     setError('');
     const { passwordRepeat, ...dataWithoutPasswordRepeat } = userData;
     mutate(dataWithoutPasswordRepeat);
