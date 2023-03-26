@@ -7,18 +7,20 @@ import {
   Typography,
   TextField,
   Button,
-  Alert
+  Alert,
+  CircularProgress
 } from '@mui/material';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from 'react-query';
 
 import { appRoutes } from 'routes/routes';
 
 import api from '../../api/api';
 
-import { registerSchema } from './SignUp.registerSchema';
+import { registerSchema } from './register.schema';
 import * as styles from './SignUp.styles';
 
 interface IFormInput {
@@ -26,11 +28,11 @@ interface IFormInput {
   lastName: string;
   email: string;
   password: string;
-  passwordRepeat: string;
+  passwordRepeat?: string;
 }
 
 const SignUp = () => {
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
   const navigate = useNavigate();
 
   const {
@@ -42,19 +44,24 @@ const SignUp = () => {
     mode: 'onBlur'
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = data => {
+  const apiPost = async (data: IFormInput) => {
+    const res = await api.post('/auth/register', data);
+    return res;
+  };
+
+  const { mutate, isLoading } = useMutation(apiPost, {
+    onSuccess: () => {
+      navigate(appRoutes.signIn);
+    },
+    onError: (err: any) => {
+      setError(err.response?.data.message);
+    }
+  });
+
+  const onSubmit: SubmitHandler<IFormInput> = async userData => {
     setError('');
-    const { passwordRepeat, ...dataWithoutPasswordRepeat } = data;
-    api
-      .post('/auth/register', dataWithoutPasswordRepeat)
-      .then(res => {
-        console.log('then', res);
-        navigate(appRoutes.signIn);
-      })
-      .catch(err => {
-        console.log('catch', err.response.data);
-        setError(err.response.data.message);
-      });
+    const { passwordRepeat, ...dataWithoutPasswordRepeat } = userData;
+    mutate(dataWithoutPasswordRepeat);
   };
 
   return (
@@ -119,6 +126,7 @@ const SignUp = () => {
               >
                 Sign Up
               </Button>
+              {isLoading && <CircularProgress />}
             </Stack>
           </form>
           <Typography sx={{ mt: 2, textAlign: 'center' }}>
