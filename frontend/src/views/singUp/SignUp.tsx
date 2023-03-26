@@ -32,7 +32,7 @@ interface IFormInput {
 }
 
 const SignUp = () => {
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const {
@@ -54,7 +54,7 @@ const SignUp = () => {
       navigate(appRoutes.signIn);
     },
     onError: (err: any) => {
-      setError(err.response?.data.message);
+      setError(err.response?.data?.message);
     }
   });
 
