@@ -13,7 +13,7 @@ const MainView = () => {
     >
       <Paper
         elevation={5}
-        sx={{ p: 1, display: { xs: 'contents', sm: 'block' } }}
+        sx={{ p: 1.5, display: { xs: 'contents', sm: 'block' } }}
       >
         <Typography
           variant="h1"
@@ -25,8 +25,7 @@ const MainView = () => {
             wordBreak: 'break-all'
           }}
         >
-          HR{' '}
-          <Box component="br" sx={{ display: { xs: 'initial', sm: 'none' } }} />
+          HR <Box component="br" sx={{ display: { sm: 'none' } }} />
           Analytics
         </Typography>
         <Stack
