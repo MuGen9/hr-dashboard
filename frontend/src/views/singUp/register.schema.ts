@@ -22,3 +22,6 @@ export const registerSchema = z
     message: 'Passwords do not match',
     path: ['passwordRepeat']
   });
+
+export type SignUpForm = z.infer<typeof registerSchema>;
+export type SignUpRequestPayload = Omit<SignUpForm, 'passwordRepeat'>;

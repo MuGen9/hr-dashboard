@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-const api = axios.create({
+import { SignUpRequestPayload } from 'views/singUp/register.schema';
+
+export const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL
 });
 
-export default api;
+export const registerRequest = async (data: SignUpRequestPayload) => {
+  await api.post('/auth/register', data);
+};
