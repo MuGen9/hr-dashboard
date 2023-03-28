@@ -1,55 +1,106 @@
-import { Link, Button, Box, Paper, Stack, Typography } from '@mui/material';
+import {
+  Link,
+  Box,
+  Paper,
+  Stack,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  CircularProgress
+} from '@mui/material';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from 'react-query';
+import { AxiosError } from 'axios';
 
 import { appRoutes } from 'routes/routes';
 
+import { logInRequest } from '../../api/api';
+import * as styles from '../singUp/SignUp.styles';
+
+import { loginSchema, LogInForm } from './login.schema';
+
 const SignIn = () => {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<LogInForm>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onBlur'
+  });
+
+  const {
+    mutate,
+    isLoading,
+    error: mutateError
+  } = useMutation<void, AxiosError<{ message: string }>, LogInForm>(
+    logInRequest,
+    {
+      onSuccess: res => {
+        console.log(res);
+        navigate(appRoutes.dashboard);
+      }
+    }
+  );
+
+  const onSubmit: SubmitHandler<LogInForm> = userData => {
+    mutate(userData);
+  };
+
   return (
     <HelmetProvider>
       <Helmet>
         <title>HR Dashboard - Sign In</title>
       </Helmet>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          minHeight: '100vh'
-        }}
-      >
-        <Paper
-          elevation={5}
-          sx={{ p: 2, display: { xs: 'contents', sm: 'block' } }}
-        >
-          <Typography
-            variant="h1"
-            align="center"
-            sx={{
-              fontSize: '2rem',
-              fontWeight: 'medium',
-              margin: '1rem',
-              wordBreak: 'break-all'
-            }}
-          >
+      <Box sx={styles.box}>
+        <Paper elevation={5} sx={styles.paper}>
+          <Typography variant="h1" sx={styles.typography}>
             Sign in
           </Typography>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            justifyContent="center"
-            alignItems="center"
-            spacing={1.5}
-          >
-            <Link href={appRoutes.main}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={1.5} sx={styles.stack}>
+              <TextField
+                label="Email *"
+                variant="standard"
+                sx={{ width: { xs: '230px', sm: '320px' } }}
+                {...register('email')}
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+              />
+              <TextField
+                label="Password *"
+                variant="standard"
+                type="password"
+                sx={{ width: { xs: '230px', sm: '320px' } }}
+                {...register('password')}
+                error={Boolean(errors.password)}
+                helperText={errors.password?.message}
+              />
+              {mutateError?.response?.data?.message && (
+                <Alert severity="error">
+                  {mutateError.response.data.message}
+                </Alert>
+              )}
               <Button
-                color="primary"
+                type="submit"
                 variant="contained"
-                sx={{ fontSize: '1.2rem', m: 2, p: 2 }}
+                sx={{ fontSize: '1rem', p: 1.5 }}
               >
-                Back
+                Sign In
               </Button>
-            </Link>
-          </Stack>
+              {isLoading && <CircularProgress />}
+            </Stack>
+          </form>
+          <Typography sx={{ mt: 2, textAlign: 'center' }}>
+            Don&apos;t have an account? Then{' '}
+            <Link href={appRoutes.signUp}>Sign Up</Link>
+          </Typography>
         </Paper>
       </Box>
     </HelmetProvider>
