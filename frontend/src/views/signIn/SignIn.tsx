@@ -5,6 +5,8 @@ import {
   Stack,
   Typography,
   TextField,
+  Checkbox,
+  FormControlLabel,
   Button,
   Alert,
   CircularProgress
@@ -21,7 +23,7 @@ import { appRoutes } from 'routes/routes';
 import { logInRequest } from '../../api/api';
 import * as styles from '../singUp/SignUp.styles';
 
-import { loginSchema, LogInForm } from './login.schema';
+import { loginSchema, LogInForm, LogInRequestPayload } from './login.schema';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -39,17 +41,18 @@ const SignIn = () => {
     mutate,
     isLoading,
     error: mutateError
-  } = useMutation<void, AxiosError<{ message: string }>, LogInForm>(
+  } = useMutation<void, AxiosError<{ message: string }>, LogInRequestPayload>(
     logInRequest,
     {
       onSuccess: res => {
         console.log(res);
-        navigate(appRoutes.dashboard);
+        navigate(appRoutes.signIn);
       }
     }
   );
 
   const onSubmit: SubmitHandler<LogInForm> = userData => {
+    console.log(userData);
     mutate(userData);
   };
 
@@ -81,6 +84,10 @@ const SignIn = () => {
                 {...register('password')}
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message}
+              />
+              <FormControlLabel
+                control={<Checkbox {...register('remember')} />}
+                label="Remember me"
               />
               {mutateError?.response?.data?.message && (
                 <Alert severity="error">

@@ -5,7 +5,9 @@ export const loginSchema = z.object({
   password: z
     .string()
     .min(5, { message: 'At least 5 characters' })
-    .max(15, { message: 'Please use less than 15 characters' })
+    .max(15, { message: 'Please use less than 15 characters' }),
+  remember: z.boolean()
 });
 
 export type LogInForm = z.infer<typeof loginSchema>;
+export type LogInRequestPayload = Omit<LogInForm, 'remember'>;
