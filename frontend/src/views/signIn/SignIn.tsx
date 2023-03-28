@@ -25,12 +25,18 @@ import * as styles from '../singUp/SignUp.styles';
 
 import { loginSchema, LogInForm, LogInRequestPayload } from './login.schema';
 
+interface LogInResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
 const SignIn = () => {
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm<LogInForm>({
     resolver: zodResolver(loginSchema),
@@ -41,19 +47,28 @@ const SignIn = () => {
     mutate,
     isLoading,
     error: mutateError
-  } = useMutation<void, AxiosError<{ message: string }>, LogInRequestPayload>(
-    logInRequest,
-    {
-      onSuccess: res => {
-        console.log(res);
-        navigate(appRoutes.signIn);
+  } = useMutation<
+    LogInResponse,
+    AxiosError<{ message: string }>,
+    LogInRequestPayload
+  >(logInRequest, {
+    onSuccess: tokenRes => {
+      const rememberCheckbox = getValues('remember');
+      const { accessToken, refreshToken } = tokenRes;
+      if (rememberCheckbox) {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+      } else {
+        sessionStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
       }
+      navigate(appRoutes.signIn);
     }
-  );
+  });
 
   const onSubmit: SubmitHandler<LogInForm> = userData => {
-    console.log(userData);
-    mutate(userData);
+    const { remember, ...dataWithoutRemember } = userData;
+    mutate(dataWithoutRemember);
   };
 
   return (
@@ -105,8 +120,8 @@ const SignIn = () => {
             </Stack>
           </form>
           <Typography sx={{ mt: 2, textAlign: 'center' }}>
-            Don&apos;t have an account? Then{' '}
-            <Link href={appRoutes.signUp}>Sign Up</Link>
+            Don&apos;t have an account?{' '}
+            <Link href={appRoutes.signUp}>Click here to create one</Link>
           </Typography>
         </Paper>
       </Box>

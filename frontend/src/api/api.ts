@@ -11,6 +11,7 @@ export const registerRequest = async (data: SignUpRequestPayload) => {
   await api.post('/auth/register', data);
 };
 
-export const logInRequest = async (data: LogInRequestPayload) => {
-  await api.post('/auth/login', data);
+export const logInRequest = async (userData: LogInRequestPayload) => {
+  const { data } = await api.post('/auth/login', userData);
+  return data;
 };
