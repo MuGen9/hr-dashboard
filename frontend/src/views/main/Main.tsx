@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Link, Paper, Typography } from '@mui/material';
 
-import { appRoutes } from 'routes/routes';
+import { appRoutes } from 'utils/routes';
 
 const MainView = () => {
   return (

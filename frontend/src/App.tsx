@@ -4,7 +4,7 @@ import MainView from 'views/main/Main';
 import SignIn from 'views/signIn/SignIn';
 import SignUp from 'views/singUp/SignUp';
 import Dashboard from 'views/dashboard/Dashboard';
-import { appRoutes } from 'routes/routes';
+import { appRoutes } from 'utils/routes';
 
 const App = () => {
   return (

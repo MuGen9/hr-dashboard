@@ -18,9 +18,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 
-import { appRoutes } from 'routes/routes';
+import { appRoutes } from 'utils/routes';
 
-import { logInRequest } from '../../api/api';
+import { logInRequest } from '../../utils/api';
 import * as styles from '../singUp/SignUp.styles';
 
 import { loginSchema, LogInForm, LogInRequestPayload } from './login.schema';
@@ -52,9 +52,8 @@ const SignIn = () => {
     AxiosError<{ message: string }>,
     LogInRequestPayload
   >(logInRequest, {
-    onSuccess: tokenRes => {
+    onSuccess: ({ accessToken, refreshToken }) => {
       const rememberCheckbox = getValues('remember');
-      const { accessToken, refreshToken } = tokenRes;
       if (rememberCheckbox) {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
