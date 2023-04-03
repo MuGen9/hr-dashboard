@@ -5,11 +5,6 @@ import { LogInRequestPayload } from 'views/signIn/login.schema';
 
 import { tokenStorage } from './tokenStorage';
 
-type RefreshTokenType = {
-  refreshToken?: string;
-  remember?: boolean;
-};
-
 export const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: { 'Content-Type': 'application/json' }
@@ -24,7 +19,7 @@ export const logInRequest = async (userData: LogInRequestPayload) => {
   return data;
 };
 
-export const refreshTokenRequest = async (token: RefreshTokenType) => {
+export const refreshTokenRequest = async (token: string | undefined) => {
   await api.post('/auth/refresh-token', token);
 };
 
@@ -52,7 +47,7 @@ api.interceptors.response.use(
   error => {
     console.log('interceptor response error', error);
     if (error.response.data.statusCode === 401) {
-      const refreshToken = tokenStorage.getRefreshToken();
+      const refreshToken = tokenStorage.getRefreshTokenRaw();
       refreshTokenRequest(refreshToken);
     }
     return error;

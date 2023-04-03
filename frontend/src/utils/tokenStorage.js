@@ -43,6 +43,10 @@ export const tokenStorage = {
 
     return { refreshToken: undefined };
   },
+  getRefreshTokenRaw: () => {
+    const refreshToken = tokenStorage.getRefreshToken().refreshToken;
+    return refreshToken;
+  },
   saveAccessToken: ({ remember, token }) => {
     localStorage.removeItem('accessToken');
     sessionStorage.removeItem('accessToken');
