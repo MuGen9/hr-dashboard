@@ -17,21 +17,27 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
+import { useSyncExternalStore } from 'react';
 
 import { appRoutes } from 'utils/routes';
+import { tokenStorage } from 'utils/tokenStorage';
 
 import { logInRequest } from '../../utils/api';
 import * as styles from '../singUp/SignUp.styles';
 
-import { loginSchema, LogInForm, LogInRequestPayload } from './login.schema';
-
-interface LogInResponse {
-  accessToken: string;
-  refreshToken: string;
-}
+import {
+  loginSchema,
+  LogInForm,
+  LogInRequestPayload,
+  LogInResponse
+} from './login.schema';
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const useTokenStore = useSyncExternalStore(
+    tokenStorage.subscribe,
+    tokenStorage.getAccessTokenRaw
+  );
 
   const {
     register,
@@ -54,13 +60,15 @@ const SignIn = () => {
   >(logInRequest, {
     onSuccess: ({ accessToken, refreshToken }) => {
       const rememberCheckbox = getValues('remember');
-      if (rememberCheckbox) {
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-      } else {
-        sessionStorage.setItem('accessToken', accessToken);
-        sessionStorage.setItem('refreshToken', refreshToken);
-      }
+      tokenStorage.saveAccessToken({
+        remember: rememberCheckbox,
+        token: accessToken
+      });
+      tokenStorage.saveRefreshToken({
+        remember: rememberCheckbox,
+        token: refreshToken
+      });
+      console.log('useTokenStore', useTokenStore);
       navigate(appRoutes.signIn);
     }
   });
