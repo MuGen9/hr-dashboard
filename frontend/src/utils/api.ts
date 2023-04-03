@@ -42,6 +42,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   res => {
     console.log('interceptor response success', res);
+    if (res.data.accessToken) {
+      tokenStorage.saveAccessToken(res.data.accessToken);
+    }
+    if (res.data.refreshToken) {
+      tokenStorage.saveRefreshToken(res.data.refreshToken);
+    }
     return res;
   },
   error => {
