@@ -30,9 +30,7 @@ export const refreshTokenRequest = async (token: RefreshTokenType) => {
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const accessToken =
-      localStorage.getItem('accessToken') ??
-      sessionStorage.getItem('accessToken');
+    const accessToken = tokenStorage.getAccessTokenRaw();
     const newConfig = config;
     if (accessToken) {
       newConfig.headers.Authorization = `Bearer ${accessToken}`;
@@ -48,15 +46,13 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   res => {
-    console.log('interceptor response: ', res);
+    console.log('interceptor response success', res);
     return res;
   },
   error => {
-    console.log('res error', error);
+    console.log('interceptor response error', error);
     if (error.response.data.statusCode === 401) {
-      console.log('interceptor response 401');
       const refreshToken = tokenStorage.getRefreshToken();
-      console.log(refreshToken);
       refreshTokenRequest(refreshToken);
     }
     return error;
