@@ -60,7 +60,7 @@ const SignIn = () => {
           localStorage.removeItem('accessToken');
           sessionStorage.setItem('accessToken', accessToken);
         }
-        navigate(appRoutes.signIn);
+        navigate(appRoutes.dashboard);
       }
     }
   );

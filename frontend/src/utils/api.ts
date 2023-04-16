@@ -17,10 +17,6 @@ export const logInRequest = async (userData: LogInRequestPayload) => {
   return data;
 };
 
-// export const refreshTokenRequest = async (token: string | undefined) => {
-//   await api.post('/auth/refresh-token', token);
-// };
-
 // api.interceptors.request.use(
 //   (config: InternalAxiosRequestConfig) => {
 //     const accessToken = tokenStorage.getAccessTokenRaw();
