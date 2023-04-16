@@ -1,9 +1,7 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 import { SignUpRequestPayload } from 'views/singUp/register.schema';
 import { LogInRequestPayload } from 'views/signIn/login.schema';
-
-import { tokenStorage } from './tokenStorage';
 
 export const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -15,47 +13,47 @@ export const registerRequest = async (data: SignUpRequestPayload) => {
 };
 
 export const logInRequest = async (userData: LogInRequestPayload) => {
-  const { data } = await api.post('/auth/login', userData);
+  const { data } = await api.post('/auth/basic-login', userData);
   return data;
 };
 
-export const refreshTokenRequest = async (token: string | undefined) => {
-  await api.post('/auth/refresh-token', token);
-};
+// export const refreshTokenRequest = async (token: string | undefined) => {
+//   await api.post('/auth/refresh-token', token);
+// };
 
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const accessToken = tokenStorage.getAccessTokenRaw();
-    const newConfig = config;
-    if (accessToken) {
-      newConfig.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    console.log('interceptor request newConfig', newConfig);
-    return newConfig;
-  },
-  error => {
-    // If the interceptor encounters an error, return a rejected Promise
-    return Promise.reject(error);
-  }
-);
+// api.interceptors.request.use(
+//   (config: InternalAxiosRequestConfig) => {
+//     const accessToken = tokenStorage.getAccessTokenRaw();
+//     const newConfig = config;
+//     if (accessToken) {
+//       newConfig.headers.Authorization = `Bearer ${accessToken}`;
+//     }
+//     console.log('interceptor request newConfig', newConfig);
+//     return newConfig;
+//   },
+//   error => {
+//     // If the interceptor encounters an error, return a rejected Promise
+//     return Promise.reject(error);
+//   }
+// );
 
-api.interceptors.response.use(
-  res => {
-    console.log('interceptor response success', res);
-    if (res.data.accessToken) {
-      tokenStorage.saveAccessToken(res.data.accessToken);
-    }
-    if (res.data.refreshToken) {
-      tokenStorage.saveRefreshToken(res.data.refreshToken);
-    }
-    return res;
-  },
-  error => {
-    console.log('interceptor response error', error);
-    if (error.response.data.statusCode === 401) {
-      const refreshToken = tokenStorage.getRefreshTokenRaw();
-      refreshTokenRequest(refreshToken);
-    }
-    return error;
-  }
-);
+// api.interceptors.response.use(
+//   res => {
+//     console.log('interceptor response success', res);
+//     if (res.data.accessToken) {
+//       tokenStorage.saveAccessToken(res.data.accessToken);
+//     }
+//     if (res.data.refreshToken) {
+//       tokenStorage.saveRefreshToken(res.data.refreshToken);
+//     }
+//     return res;
+//   },
+//   error => {
+//     console.log('interceptor response error', error);
+//     if (error.response.data.statusCode === 401) {
+//       const refreshToken = tokenStorage.getRefreshTokenRaw();
+//       refreshTokenRequest(refreshToken);
+//     }
+//     return error;
+//   }
+// );

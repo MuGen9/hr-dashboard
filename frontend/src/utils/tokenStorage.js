@@ -27,7 +27,7 @@ export const tokenStorage = {
     return { accessToken: undefined };
   },
   getAccessTokenRaw: () => {
-    const accessToken = tokenStorage.getAccessToken().accessToken;
+    const { accessToken } = tokenStorage.getAccessToken();
     return accessToken;
   },
   getRefreshToken: () => {
@@ -44,7 +44,7 @@ export const tokenStorage = {
     return { refreshToken: undefined };
   },
   getRefreshTokenRaw: () => {
-    const refreshToken = tokenStorage.getRefreshToken().refreshToken;
+    const { refreshToken } = tokenStorage.getRefreshToken();
     return refreshToken;
   },
   saveAccessToken: ({ remember, token }) => {

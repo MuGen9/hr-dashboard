@@ -11,8 +11,3 @@ export const loginSchema = z.object({
 
 export type LogInForm = z.infer<typeof loginSchema>;
 export type LogInRequestPayload = Omit<LogInForm, 'remember'>;
-
-export type LogInResponse = {
-  accessToken: string;
-  refreshToken: string;
-};

@@ -17,27 +17,16 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
-import { useSyncExternalStore } from 'react';
 
 import { appRoutes } from 'utils/routes';
-import { tokenStorage } from 'utils/tokenStorage';
 
 import { logInRequest } from '../../utils/api';
 import * as styles from '../singUp/SignUp.styles';
 
-import {
-  loginSchema,
-  LogInForm,
-  LogInRequestPayload,
-  LogInResponse
-} from './login.schema';
+import { loginSchema, LogInForm, LogInRequestPayload } from './login.schema';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const useTokenStore = useSyncExternalStore(
-    tokenStorage.subscribe,
-    tokenStorage.getAccessTokenRaw
-  );
 
   const {
     register,
@@ -53,25 +42,28 @@ const SignIn = () => {
     mutate,
     isLoading,
     error: mutateError
-  } = useMutation<
-    LogInResponse,
-    AxiosError<{ message: string }>,
-    LogInRequestPayload
-  >(logInRequest, {
-    onSuccess: ({ accessToken, refreshToken }) => {
-      const rememberCheckbox = getValues('remember');
-      tokenStorage.saveAccessToken({
-        remember: rememberCheckbox,
-        token: accessToken
-      });
-      tokenStorage.saveRefreshToken({
-        remember: rememberCheckbox,
-        token: refreshToken
-      });
-      console.log('useTokenStore', useTokenStore);
-      navigate(appRoutes.signIn);
+  } = useMutation<string, AxiosError<{ message: string }>, LogInRequestPayload>(
+    logInRequest,
+    {
+      onSuccess: accessToken => {
+        const rememberCheckbox = getValues('remember');
+        // save token to local or session storage
+        // tokenStorage.saveAccessToken({
+        //   remember: rememberCheckbox,
+        //   token: accessToken
+        // });
+        console.log('onSuccess', accessToken, rememberCheckbox);
+        if (rememberCheckbox) {
+          sessionStorage.removeItem('accessToken');
+          localStorage.setItem('accessToken', accessToken);
+        } else {
+          localStorage.removeItem('accessToken');
+          sessionStorage.setItem('accessToken', accessToken);
+        }
+        navigate(appRoutes.signIn);
+      }
     }
-  });
+  );
 
   const onSubmit: SubmitHandler<LogInForm> = userData => {
     const { remember, ...dataWithoutRemember } = userData;
