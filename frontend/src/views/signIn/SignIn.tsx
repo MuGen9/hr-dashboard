@@ -47,12 +47,6 @@ const SignIn = () => {
     {
       onSuccess: accessToken => {
         const rememberCheckbox = getValues('remember');
-        // save token to local or session storage
-        // tokenStorage.saveAccessToken({
-        //   remember: rememberCheckbox,
-        //   token: accessToken
-        // });
-        console.log('onSuccess', accessToken, rememberCheckbox);
         if (rememberCheckbox) {
           sessionStorage.removeItem('accessToken');
           localStorage.setItem('accessToken', accessToken);
