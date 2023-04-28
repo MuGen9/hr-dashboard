@@ -4,7 +4,7 @@ import MainView from 'views/main/Main';
 import SignIn from 'views/signIn/SignIn';
 import SignUp from 'views/singUp/SignUp';
 import Dashboard from 'views/dashboard/Dashboard';
-import { appRoutes } from 'utils/routes';
+import { appRoutes, ProtectedRoute } from 'utils/routes';
 
 const App = () => {
   return (
@@ -14,7 +14,9 @@ const App = () => {
           <Route index element={<MainView />} />
           <Route path={appRoutes.signIn} element={<SignIn />} />
           <Route path={appRoutes.signUp} element={<SignUp />} />
-          <Route path={appRoutes.dashboard} element={<Dashboard />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path={appRoutes.dashboard} element={<Dashboard />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
