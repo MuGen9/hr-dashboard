@@ -17,10 +17,9 @@ export const ProtectedRoute = () => {
   useEffect(() => {
     if (!token) {
       navigate(appRoutes.signIn);
-      return null;
     }
-    return <Outlet />;
   }, [navigate, token]);
 
+  if (!token) return null;
   return <Outlet />;
 };
