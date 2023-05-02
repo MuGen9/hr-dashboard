@@ -23,3 +23,18 @@ export const ProtectedRoute = () => {
   if (!token) return null;
   return <Outlet />;
 };
+
+export const RedirectUser = () => {
+  const navigate = useNavigate();
+  const token =
+    localStorage.getItem('accessToken') ||
+    sessionStorage.getItem('accessToken');
+
+  useEffect(() => {
+    if (token) {
+      navigate(appRoutes.dashboard);
+    }
+  }, [navigate, token]);
+
+  return <Outlet />;
+};
