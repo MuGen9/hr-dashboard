@@ -13,11 +13,7 @@ const App = () => {
         <Route path={appRoutes.main}>
           <Route element={<RedirectUser />}>
             <Route index element={<MainView />} />
-          </Route>
-          <Route element={<RedirectUser />}>
             <Route path={appRoutes.signIn} element={<SignIn />} />
-          </Route>
-          <Route element={<RedirectUser />}>
             <Route path={appRoutes.signUp} element={<SignUp />} />
           </Route>
           <Route element={<ProtectedRoute />}>
