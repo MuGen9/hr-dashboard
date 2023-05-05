@@ -16,9 +16,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from 'react-query';
 import { AxiosError } from 'axios';
 
-import { appRoutes } from 'routes/routes';
-
-import { registerRequest } from '../../api/api';
+import { appRoutes } from 'utils/routes';
+import { registerRequest } from 'utils/api';
 
 import {
   registerSchema,
