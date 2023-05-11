@@ -6,8 +6,6 @@ import SignUp from 'views/singUp/SignUp';
 import Dashboard from 'views/dashboard/Dashboard';
 import { appRoutes, ProtectedRoute, RedirectUser } from 'utils/routes';
 
-let x = 0;
-
 const App = () => {
   return (
     <BrowserRouter>
